@@ -14,6 +14,7 @@ public class Lifeform extends MovingThing {
 	private boolean onPlatform;
 	private boolean isAllowedToWalk;
 	private boolean isInWall;
+	private boolean isJumping;
 	
 	public Lifeform(int height, int width, int mass, int hops, int[] position, double[] velocity, double maxVelocity, double accelConstant, String name, Weapon weapon){
 		this.setHeight(height);
@@ -32,27 +33,45 @@ public class Lifeform extends MovingThing {
 	}
 	
 	public void walk(double init) {
-		if (this.getVelocity()[0] == 0 
-				// Dirty way to check if the initiated velocity is the opposite sign of the current velocity.
-				|| (this.getVelocity()[0] <= 0 && init >= 0) 
-				|| (this.getVelocity()[0] >= 0 && init <= 0)){
-			this.setVelocity(new double[]{init, this.getVertVelocity()});
-		}
-		// Accelerate until the maximum velocity is reached
-		else if (Math.abs(this.getVelocity()[0]) < this.getMaxVelocity()){
-			this.scaleVelocity(this.getAccelConstant(), 1);
+		if (this.isAllowedToWalk){
+			if (this.getVelocity()[0] == 0 
+					// Dirty way to check if the initiated velocity is the opposite sign of the current velocity.
+					|| (this.getVelocity()[0] <= 0 && init >= 0) 
+					|| (this.getVelocity()[0] >= 0 && init <= 0)){
+				this.setVelocity(new double[]{init, this.getVertVelocity()});
+			}
+			// Accelerate until the maximum velocity is reached
+			else if (Math.abs(this.getVelocity()[0]) < this.getMaxVelocity()){
+				this.scaleVelocity(this.getAccelConstant(), 1);
+			}
 		}
 	}
 	
 	public void jump(){
+		// Break out of object floor and then update velocity.
+		this.incrementPosition(0, -50);
+		this.setJumping(true);
 		this.setOnPlatform(false);
 		this.setVertVelocity(this.getHops() * -.15);
 	}
 	
+	public boolean isJumping() {
+		return isJumping;
+	}
+
+	public void setJumping(boolean isJumping) {
+		this.isJumping = isJumping;
+	}
+
 	public void updateVelocity(int delta){
 		// EFFECTS DUE TO GRAVITY
 		if (this.isOnPlatform() == false){
 			this.setVertVelocity(this.getVertVelocity() + .05 * delta);
+		}
+		
+		// JUMPING changes
+		if (this.getVertVelocity() >= 0){
+			this.setJumping(false);
 		}
 	}
 	
@@ -64,7 +83,6 @@ public class Lifeform extends MovingThing {
 		this.onPlatform = onPlatform;
 		if (onPlatform == true){
 			this.setVelocity(new double[]{this.getVelocity()[0], 0});
-			this.incrementPosition(0, -1);
 		}
 	}
 

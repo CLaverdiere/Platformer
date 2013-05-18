@@ -58,9 +58,25 @@ public abstract class MovingThing {
 	public int[] getPosition() {
 		return position;
 	}
+	
+	public int getPositionX() {
+		return position[0];
+	}
+	
+	public int getPositionY() {
+		return position[1];
+	}
 
 	public void setPosition(int[] position) {
 		this.position = position;
+	}
+	
+	public void setXPosition(int x){
+		this.position[0] = x;
+	}
+	
+	public void setYPosition(int y){
+		this.position[1] = y;
 	}
 	
 	public void updatePosition(){

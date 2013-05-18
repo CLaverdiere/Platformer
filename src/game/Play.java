@@ -68,27 +68,19 @@ public class Play extends BasicGameState{
 		
 		// ACCELERATING LEFT/RIGHT MOVEMENT //
 		if (input.isKeyDown(Input.KEY_D) && input.isKeyDown(Input.KEY_A)){
-			if (player.isAllowedToWalk()){
-				player.walk(0);
-			}
+			player.walk(0);
 		}
 		else if (input.isKeyDown(Input.KEY_A)){
 			// Make sure player isn't hitting object.
-			if (player.isAllowedToWalk()){
-				player.walk(-1);
-			}
+			player.walk(-1);
 		}
 		else if (input.isKeyDown(Input.KEY_D)){
 			// Make sure player isn't hitting object.
-			if (player.isAllowedToWalk()){
-				player.walk(1);
-			}
+			player.walk(1);
 		}
 		// Reset movement to zero when no buttons pushed
 		else {
-			if (player.isAllowedToWalk()){
-				player.walk(0);
-			}
+			player.walk(0);
 		}
 		
 		// PLAYER JUMPING
@@ -106,29 +98,45 @@ public class Play extends BasicGameState{
 		}
 		
 		// PLATFORM DETECTION
-		// This is not working yet
 		boolean foundPlatform = false;
 		for (int i = 0; i < getEnvironment().length; i++){
 			if (getEnvironment()[i] != null){
-				// If player is within width of platform
+				
+				// Object Variables
 				int objPosX = getEnvironment()[i].getPosition()[0];
 				int objPosY = getEnvironment()[i].getPosition()[1];
 				int objWidth = getEnvironment()[i].getWidth();
+				int objHeight = getEnvironment()[i].getHeight();
 				int objRightSide = objPosX + objWidth;
+				int objBottom = objPosY + objHeight;
 				
-				// Determine if player is jumping onto a platform
+				
+				// Determine if player is in width of block.
 				if (playerPosX - objPosX <= objWidth && playerPosX - objPosX + playerWidth >= 0 ){
-					if (playerPosY + playerHeight > objPosY){
+					
+					// Determine if player is hitting head
+					if (playerPosY - objBottom < player.getVertVelocity() * -1 && playerPosY - objBottom > 0){
+						player.setVertVelocity(0);
+					}
+					
+					// Determine if player is jumping onto a platform
+					else if (playerFeet >= objPosY && objBottom >= playerPosY){
 						foundPlatform = true;
-						player.setOnPlatform(true);
+						if (!player.isOnPlatform()){
+							if (!player.isJumping()){
+								player.setYPosition(objPosY - playerHeight);
+								player.setOnPlatform(true);
+							}
+						}
 					}
 				}
+				
 				
 				// Determine if player is walking into a platform
 				//   Checks if player is hitting either side of object
 				if (Math.abs(playerRightSide - objPosX) < player.getLatVelocity() 
 						|| Math.abs(playerPosX - objRightSide) < Math.abs(player.getLatVelocity())){
-					if (playerFeet > objPosY && !(playerPosX > objPosY)){
+					if (playerFeet > objPosY && !(playerPosY > objPosY)){
 						double oldVel = player.getLatVelocity();
 						player.setAllowedToWalk(false);
 						player.moveOutOfWall(-1 * oldVel);
@@ -136,17 +144,16 @@ public class Play extends BasicGameState{
 					}
 				}
 			}
-			
-			// Used to make player fall again once they step off the platform.
-			if (foundPlatform == false){
-				player.setOnPlatform(false);
-			}
+		}
+		
+		// Used to make player fall again once they step off the platform.
+		if (foundPlatform == false){
+			player.setOnPlatform(false);
 		}
 		
 		// After all is said and done, update positions and velocities.
 		player.updateVelocity(delta);
 		player.updatePosition();
-		
 	}
 	
 	public int getID(){

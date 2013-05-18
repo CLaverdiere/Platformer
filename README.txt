@@ -7,3 +7,6 @@ This isn't meant to be a serious project, but instead a way for me to get a gras
 This isn't my primary project, and it will get updated when I get the itch to work on it some more.
 
 Lastly, I plan to draw all sprites from hand, no matter how laughably pathetic they will be. This is serious business.
+
+Videos:
+(I'll post videos of it on youtube and post them here)
