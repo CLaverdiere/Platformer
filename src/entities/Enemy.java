@@ -9,7 +9,7 @@ import destruction.Weapon;
 public class Enemy extends Lifeform{
 	
 	public Enemy(int height, int width, int mass, int[] position, double maxVelocity, String name, Weapon weapon) {
-		super(height, width, mass, 100, position, new double[]{0, 0}, maxVelocity, 1.10, name, weapon);
+		super(height, width, mass, 100, position, new double[]{0, 0}, maxVelocity, 1.10, name, weapon, "res/enemy.png");
 	}
 
 	public String toString(){

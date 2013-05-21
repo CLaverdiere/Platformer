@@ -1,5 +1,7 @@
 package entities;
 
+import org.newdawn.slick.Image;
+
 /**
  * Class for all moving things in the game.
  * @author chris
@@ -13,7 +15,8 @@ public abstract class MovingThing {
 	private double[] velocity;
 	private double maxVelocity;
 	private double accelConstant;
-	//private Image sprite;
+	private String spriteLoc;
+	private Image sprite;
 	
 	public double getAccelConstant() {
 		return accelConstant;
@@ -121,5 +124,21 @@ public abstract class MovingThing {
 	public void scaleVelocity(double x, double y){
 		this.velocity[0] *= x;
 		this.velocity[1] *= y;
+	}
+
+	public String getSpriteLoc() {
+		return spriteLoc;
+	}
+
+	public void setSpriteLoc(String spriteLoc) {
+		this.spriteLoc = spriteLoc;
+	}
+
+	public Image getSprite() {
+		return sprite;
+	}
+
+	public void setSprite(Image sprite) {
+		this.sprite = sprite;
 	}
 }

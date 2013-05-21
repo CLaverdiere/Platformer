@@ -1,5 +1,8 @@
 package entities;
 
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
+
 import destruction.Weapon;
 
 /**
@@ -9,8 +12,8 @@ import destruction.Weapon;
 public class Player extends Lifeform{
 	private int ammo;
 
-	public Player(int height, int width, int mass, int[] position, double maxVelocity, String name, Weapon weapon) {
-		super(height, width, mass, 100, position, new double[]{0, 0}, maxVelocity, 1.15, name, weapon);
+	public Player(int height, int width, int mass, int[] position, double maxVelocity, String name, Weapon weapon) throws SlickException {
+		super(height, width, mass, 100, position, new double[]{0, 0}, maxVelocity, 1.15, name, weapon, "res/guy.png");
 		this.ammo = weapon.getCapacity();
 	}
 
@@ -29,7 +32,11 @@ public class Player extends Lifeform{
 	}
 	
 	public static void main(String[] args){
-		Player duke = new Player(300, 90, 220, new int[]{10, 10}, 2, "Duke", new Weapon("Pistol", 30));
+		try{
+		Player guy = new Player(300, 90, 220, new int[]{10, 10}, 2, "Duke", new Weapon("Pistol", 30));
+		} catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 	
 }

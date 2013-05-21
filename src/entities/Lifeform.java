@@ -1,5 +1,8 @@
 package entities;
 
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
+
 import destruction.Weapon;
 
 /**
@@ -16,7 +19,7 @@ public class Lifeform extends MovingThing {
 	private boolean isInWall;
 	private boolean isJumping;
 	
-	public Lifeform(int height, int width, int mass, int hops, int[] position, double[] velocity, double maxVelocity, double accelConstant, String name, Weapon weapon){
+	public Lifeform(int height, int width, int mass, int hops, int[] position, double[] velocity, double maxVelocity, double accelConstant, String name, Weapon weapon, String spriteLoc){
 		this.setHeight(height);
 		this.setWidth(width);
 		this.setMass(mass);
@@ -30,6 +33,12 @@ public class Lifeform extends MovingThing {
 		this.setOnPlatform(true);
 		this.setAllowedToWalk(true);
 		this.setInWall(false);
+		this.setSpriteLoc(spriteLoc);
+		try {
+			this.setSprite(new Image(spriteLoc));
+		} catch (SlickException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void walk(double init) {
